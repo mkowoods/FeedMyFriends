@@ -2,6 +2,8 @@ A simple flask based app to allow friends to post interesting articles/blog post
 
 It's like a chat room for a small group of friends.
 
+You can find the app @ http://feedmyfriends.herokuapp.com/
+
 TODO:
 - Mostly Javascript based, i'll need to setup a quick parser to go through and asynchronously pull the relevant data
 from links posted to the site. Initially, might just limit it to the favicon and title of the page, but eventually want to
