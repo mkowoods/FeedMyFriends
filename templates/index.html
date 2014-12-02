@@ -1,169 +1,205 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./static/static.css">
+    <link rel="stylesheet" href="../static/static.css">
   </head>
   <body>
-    <div class="articles container">
-      
-      <div class="article current">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">FLIGHT</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">Embraer adds third Legacy 500 prototype to flight test campaign</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 23</p>
-          </div>
+    <nav class="navbar navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
         </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>Embraer adds third Legacy 500 prototype to flight test campaign</h1>
-            <p>The third Legacy 500 has joined Embraer's flight test programme aimed at delivering the midsize business jet in 2014. The airtcraft, serial number 003...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">AW Commercial Aviation</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">CSeries Supplier Scramble</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 22</p>
-          </div>
-        </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>CSeries Supplier Scramble</h1>
-            <p>Three months before the planned first flight of its CSeries, Bombardier is grappling with supplier issues crucial to meeting its production cost...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Add Link...">
+          </form>
         </div>
       </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href = "#">Feed 1</a><li>
+                <li><a href = "#">Feed 2</a><li>
+                <li><a href = "#">Feed 2</a><li>
+                <li><a href = "#">Feed 2</a><li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10 main">
+          <div class="article current">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">FLIGHT</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">Embraer adds third Legacy 500 prototype to flight test campaign</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 23</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>Embraer adds third Legacy 500 prototype to flight test campaign</h1>
+                <p>The third Legacy 500 has joined Embraer's flight test programme aimed at delivering the midsize business jet in 2014. The airtcraft, serial number 003...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
+          </div>
 
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">AW business aviation</p>
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">AW Commercial Aviation</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">CSeries Supplier Scramble</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 22</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>CSeries Supplier Scramble</h1>
+                <p>Three months before the planned first flight of its CSeries, Bombardier is grappling with supplier issues crucial to meeting its production cost...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
           </div>
-          <div class="col-xs-6">
-            <p class="title">Flying the Gulfstream G650</p>
+
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">AW business aviation</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">Flying the Gulfstream G650</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 22</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>Flying the Gulfstream G650</h1>
+                <p>Gulfstream is turning up the heat in the large-cabin business aircraft competition with its new G650 flagship, the largest, fastest, farthest-ranging...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
           </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 22</p>
+
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">FLIGHT</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">New retirements cut RAF VC10 fleet to four</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 22</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>New retirements cut RAF VC10 fleet to four</h1>
+                <p>The UK Royal Air Force has retired another two of its Vickers VC10 tankers, with the pair's departure reducing its inventory of the Rolls-Royce...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">FLIGHT</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">Virgin can deliver more value for Delta than for SIA: Bastian</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Jul 17</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>Virgin can deliver more value for Delta than for SIA: Bastian</h1>
+                <p>Delta Air Lines president Ed Bastian is confident that the carrier can extract far more value from its shareholding in Virgin Atlantic compared with...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">AW Defense</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">Freedom Experiences Two More Power Outages</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 22</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>Freedom Experiences Two More Power Outages</h1>
+                <p>The Littoral Combat Ship (LCS-1) USS Freedom’s first overseas deployment to Southeast Asia has been marred by two more power outages...</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="article">
+            <div class="item row">
+              <div class="col-xs-3">
+                <p class="source">FLIGHT</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="title">FedEx to acquire up to 30 United 757s</p>
+              </div>
+              <div class="col-xs-3">
+                <p class="pubdate">Mar 22</p>
+              </div>
+            </div>
+            <div class="description row">
+              <div class="col-xs-3">&nbsp;</div>
+              <div class="col-xs-6">
+                <h1>FedEx to acquire up to 30 United 757s</h1>
+                <p>United Airlines is to sell up to 30 Boeing 757s to freight operator FedEx Express, with deliveries of the twinjets set to start this year.</p>
+              </div>
+              <div class="col-xs-3">&nbsp;</div>
+            </div>
           </div>
         </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>Flying the Gulfstream G650</h1>
-            <p>Gulfstream is turning up the heat in the large-cabin business aircraft competition with its new G650 flagship, the largest, fastest, farthest-ranging...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
         </div>
       </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">FLIGHT</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">New retirements cut RAF VC10 fleet to four</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 22</p>
-          </div>
-        </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>New retirements cut RAF VC10 fleet to four</h1>
-            <p>The UK Royal Air Force has retired another two of its Vickers VC10 tankers, with the pair's departure reducing its inventory of the Rolls-Royce...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">FLIGHT</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">Virgin can deliver more value for Delta than for SIA: Bastian</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Jul 17</p>
-          </div>
-        </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>Virgin can deliver more value for Delta than for SIA: Bastian</h1>
-            <p>Delta Air Lines president Ed Bastian is confident that the carrier can extract far more value from its shareholding in Virgin Atlantic compared with...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">AW Defense</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">Freedom Experiences Two More Power Outages</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 22</p>
-          </div>
-        </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>Freedom Experiences Two More Power Outages</h1>
-            <p>The Littoral Combat Ship (LCS-1) USS Freedom’s first overseas deployment to Southeast Asia has been marred by two more power outages...</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
-        </div>
-      </div>
-
-      <div class="article">
-        <div class="item row">
-          <div class="col-xs-3">
-            <p class="source">FLIGHT</p>
-          </div>
-          <div class="col-xs-6">
-            <p class="title">FedEx to acquire up to 30 United 757s</p>
-          </div>
-          <div class="col-xs-3">
-            <p class="pubdate">Mar 22</p>
-          </div>
-        </div>
-        <div class="description row">
-          <div class="col-xs-3">&nbsp;</div>
-          <div class="col-xs-6">
-            <h1>FedEx to acquire up to 30 United 757s</h1>
-            <p>United Airlines is to sell up to 30 Boeing 757s to freight operator FedEx Express, with deliveries of the twinjets set to start this year.</p>
-          </div>
-          <div class="col-xs-3">&nbsp;</div>
-        </div>
-      </div>
-
-    </div>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="./static/script.js"></script>
+    <script src="../static/script.js"></script>
   </body>
 </html>
