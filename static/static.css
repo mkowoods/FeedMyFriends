@@ -8,8 +8,7 @@ body {
 
 .navbar-fixed-top {
     background-color: #f5f5f5;
-    color: #337ab7;
-    border-bottom: solid;
+    border-bottom: solid #337ab7;
 }
 
 @media (min-width: 768px) {
@@ -18,7 +17,7 @@ body {
     top: 51px;
     bottom: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1000; /*keeps it on top of all other content*/
     display: block;
     padding: 20px;
     overflow-x: hidden;
