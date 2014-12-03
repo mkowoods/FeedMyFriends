@@ -13,10 +13,9 @@ class ScrapeSite:
             self.dom = html.fromstring(page.text)
 
 
-        self.title = None
-        self.description = None
-        self.keywords = None
-
+        self.title = ''
+        self.description = ''
+        self.keywords = ''
         self.hostname = urlparse(self.url).hostname
         self._scrape()
 
@@ -24,11 +23,7 @@ class ScrapeSite:
 
         self.title = self.get_page_title()
 
-        tag_gen = self.get_meta_tags()
-
-        while not (self.title and self.description and self.keywords):
-
-            e = tag_gen.next()
+        for e in self.get_meta_tags():
 
             if e.get('name') in ["keywords", "news_keywords"] and not self.keywords:
                 self.keywords = e.get('content')
@@ -40,6 +35,9 @@ class ScrapeSite:
             elif (e.get('name') in ['title', 'twitter:title'] or e.get('property') in ['og:title']) \
                     and not self.description:
                 self.description = e.get('content')
+
+            if (self.title and self.description and self.keywords):
+                break
 
     def get_meta_tags(self):
         res = []
