@@ -6,6 +6,9 @@ from lxml import html
 
 
 class ScrapeSite:
+    """Simple Scraper Used to pull relevant features from html. The code uses lxml and xpath for speed considerations
+    although an implementation a primary factor in performanace is the actual page request"""
+    
     def __init__(self, url):
         self.url = url
         page = requests.get(self.url)
