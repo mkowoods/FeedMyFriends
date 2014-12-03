@@ -54,6 +54,7 @@ class ScrapeSite:
         res = {"url": self.url, "hostname" : self.hostname,
                "title": self.title, "description": self.description,
                "keywords": self.keywords}
+        return(res)
 
 
 if __name__ == "__main__":
