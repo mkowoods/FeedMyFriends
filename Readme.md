@@ -16,3 +16,7 @@ expand to include more meaning ful text.
 
 Other notes:
   - Tip for building libxml on MAC OS X: STATIC_DEPS=true sudo pip install lxml
+  - Setup Threading in the meantime:     
+   - http://stackoverflow.com/questions/18430692/perform-task-directly-after-returning-json/18430861#18430861
+  - Setting up Background Tasks on Heroku: https://devcenter.heroku.com/articles/python-rq; http://python-rq.org/
+  - 
