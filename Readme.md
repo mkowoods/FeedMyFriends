@@ -10,3 +10,6 @@ from links posted to the site. Initially, might just limit it to the favicon and
 expand to include more meaning ful text.
 
 - Need to setup a backend to store links posted based on the associated site
+
+Other notes:
+Tip for building libxml on MAC OS X: STATIC_DEPS=true sudo pip install lxml

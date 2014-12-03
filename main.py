@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template
 import urlparse
 import redis
+import scraper
 
 app = Flask(__name__)
 
