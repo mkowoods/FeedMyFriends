@@ -27,6 +27,18 @@ body {
   }
 }
 
+
+.posts {
+    padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .posts {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
 /* Sidebar navigation */
 .nav-sidebar {
   margin-right: -21px; /* 20px padding + 1px border */
