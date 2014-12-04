@@ -24,6 +24,8 @@ var add_article_to_client = function (post) {
 }
 
 
+
+
 var main = function() {
  for(i=0; i<5; i++){
      console.log(i)
