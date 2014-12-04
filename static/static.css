@@ -107,7 +107,7 @@ p {
 }
 
 .description {
-  display: none;
+  /*display: none;*/
   padding-top: 10px;
   padding-bottom: 10px;
 }

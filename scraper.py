@@ -20,11 +20,16 @@ class ScrapeSite:
         self.description = ''
         self.keywords = ''
         self.hostname = urlparse(self.url).hostname
+        self.favicon = ''
         self._scrape()
 
     def _scrape(self):
 
         self.title = self.get_page_title()
+
+        self.favicon = self.dom.xpath(".//link[@rel='shortcut icon']")
+        if self.favicon:
+            self.favicon = self.favicon[0].get('href', '')
 
         for e in self.get_meta_tags():
 
@@ -60,3 +65,5 @@ class ScrapeSite:
 if __name__ == "__main__":
     url = "http://gawker.com/boy-found-behind-fake-wall-set-escape-in-motion-with-a-1665938754"
     g  = ScrapeSite(url)
+    print g.get_site_dict()
+
