@@ -9,7 +9,7 @@ var TEST_POST_FROM_SERVER = {"url" : "http://www.nytimes.com",
 
 
 //assumes post is a json like object containing all of the requisite fields
-var add_article = function (post) {
+var add_article_to_client = function (post) {
     var new_article = $("#proto-article .article").clone()
     //TODO: Review process for getting favicon
     new_article.find(".icon").html($('<img />', {src: post.favicon}))

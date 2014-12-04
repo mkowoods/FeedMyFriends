@@ -14,7 +14,9 @@ class ScrapeSite:
         page = requests.get(self.url)
         if page.status_code == 200:
             self.dom = html.fromstring(page.text)
-
+        else:
+            #TODO: this should raise an exception that notifies the Controller
+            pass
 
         self.title = ''
         self.description = ''
@@ -56,10 +58,13 @@ class ScrapeSite:
         return self.dom.find(".//title").text
 
     def get_site_dict(self):
-        res = {"url": self.url, "hostname" : self.hostname,
-               "title": self.title, "description": self.description,
-               "keywords": self.keywords}
-        return(res)
+        res = {"url": self.url,
+               "hostname" : self.hostname,
+               "title": self.title,
+               "description": self.description,
+               "keywords": self.keywords,
+               "favicon": self.favicon}
+        return res
 
 
 if __name__ == "__main__":
