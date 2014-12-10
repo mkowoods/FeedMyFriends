@@ -62,8 +62,8 @@ class ScrapeSite:
                "hostname" : self.hostname,
                "title": self.title,
                "description": self.description,
-               "keywords": self.keywords,
-               "favicon": self.favicon}
+               #"keywords": self.keywords,
+               "favicon_url": self.favicon}
         return res
 
 
