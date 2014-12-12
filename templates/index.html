@@ -34,20 +34,44 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">    
-                <li><a href = "#">Feed 1</a><li>
-                <li><a href = "#">Feed 2</a><li>
-                <li><a href = "#">Feed 3</a><li>
-                <li><a href = "#">Feed 4</a><li>
+            <form>
+                <input type="text" class="form-control" placeholder="Add Feed...">
+            </form>
+            <ul class="nav nav-sidebar">
+                {% for feed in feeds %}
+                <li><div feed_id = "{{feed.feed_id}}">{{feed.feed_name}}</div></li>
+                {% endfor %}
             </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts"></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
+            {% for post in wall %}
+                <div class="article">    
+                    <div class="row item">
+                      <div class="col-xs-3">
+                        <div class="icon"><img src="{{post.favicon_url}}"></div>
+                      </div>
+
+                      <div class="col-xs-6">
+                      <div class="row">                          
+                            <h1 class="title"><a href="{{post.url}}" target="_blank">{{post.title}}</a></h1>
+                      </div>
+                          <div class="row">
+                            <p>{{post.description}}</p>
+                          </div>
+                      </div>
+                      <div class="col-xs-3">
+                        <div class="pubdate">{{((current_time - post.create_time|float)/60)|round(1)}} min</div>
+                      </div>
+                    </div>        
+                </div>                
+            {% endfor %}
+        </div>
           
       <div id="proto-article" style = "display: none">
         <div class="article">    
             <div class="row item">
               <div class="col-xs-3">
-                <p class="icon">UNKOWN</p>
+                <div class="icon">UNKOWN</div>
               </div>
               <div class="col-xs-6">
                 <p class="title">This is a prototype for new articles added to the feed</p>
@@ -61,7 +85,7 @@
               <div class="col-xs-6">
                 <p>United Airlines is to sell up to 30 Boeing 757s to freight operator FedEx Express, with deliveries of the twinjets set to start this year.</p>
               </div>
-              <div class = "col-xs-3">this will be a vote up/down button(+)</div>
+              <div class = "col-xs-3"></div>
             </div>
         </div>
       </div>
@@ -71,5 +95,8 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
     <script src="../static/script.js"></script>
+    <script type="text/javascript">
+          
+    </script>
   </body>
 </html>

@@ -47,14 +47,16 @@ body {
 }
 
 
-.nav-sidebar > li > a{
+.nav-sidebar > li > div{
     color: #337ab7;
-}
+    margin-left: 20px;
+    padding: 10px;
+    }
 
 .nav-sidebar > li:hover,
 .nav-sidebar > li:focus {
   color: #fff;
-  background-color: #428bca;
+  background-color: #DBDBDB;
 }
 
 p {
@@ -90,16 +92,20 @@ p {
   
 }
 
+.item .icon{
+    padding: 15px;
+}
+
+.title{
+    margin-top: 10px;
+}
+
 .item .source {
   margin-left: 20px;
 }
 
-.item .title {
-  font-weight: bold;
-}
-
 .item .pubdate {
-  margin-right: 20px;
+  padding-top: 10px;
 }
 
 .item .pubdate {
@@ -108,8 +114,8 @@ p {
 
 .description {
   /*display: none;*/
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .description h1 {

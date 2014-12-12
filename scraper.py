@@ -59,10 +59,10 @@ class ScrapeSite:
 
     def get_site_dict(self):
         res = {"url": self.url,
-               "hostname" : self.hostname,
+               "hostname": self.hostname,
                "title": self.title,
                "description": self.description,
-               #"keywords": self.keywords,
+               "keywords": self.keywords,
                "favicon_url": self.favicon}
         return res
 

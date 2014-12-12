@@ -29,7 +29,7 @@ var add_article_to_client = function (post) {
 var main = function() {
  for(i=0; i<5; i++){
      console.log(i)
-     add_article(TEST_POST_FROM_SERVER)
+     //add_article(TEST_POST_FROM_SERVER)
  }
 }
 $(document).ready(main);
