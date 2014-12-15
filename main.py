@@ -7,7 +7,7 @@ import model
 import os
 
 app = Flask(__name__)
-
+ADMIN_KEY = os.environ.get('ADMIN_KEY', 'LOCAL')
 
 #Controller
 def new_post_controller(new_url):
@@ -37,9 +37,13 @@ def scraper_api():
 
 @app.route("/admin")
 def admin():
-    tmp ={'redis_conn': model.redis_cache.REDIS_CONN,
-          'postgres_conn': model.redis_cache.pgdb.DB_CONN}
-    return json.dumps(tmp)
+    submission_key = request.args.get('key')
+    if submission_key == ADMIN_KEY:    
+        tmp ={'redis_conn': model.redis_cache.REDIS_CONN,
+              'postgres_conn': model.redis_cache.pgdb.DB_CONN}
+        return json.dumps(tmp)
+    else:
+        return "Fuck Off!"
 
 @app.route("/get_feeds", methods=['GET'])
 def get_feeds():
@@ -84,8 +88,7 @@ def set_post():
 @app.route("/flush_cache", methods = ['GET', 'POST'])
 def flush_cache():
     submission_key = request.args.get('key')
-    admin_key = os.environ.get('ADMIN_KEY', 'LOCAL')
-    if submission_key == admin_key:
+    if submission_key == ADMIN_KEY:
         res = model.model.flushdb()
         return json.dumps(res)
     else:
