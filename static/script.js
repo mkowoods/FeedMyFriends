@@ -35,6 +35,18 @@ var addFeed = function () {
     //prepend feed name an ID to the list
  };
 
+
+var addPost = function () {
+    var feed_name = $("#feed-input").val()
+    console.log(feed_name)
+    request = $.ajax({
+                type: "POST",
+                url: "set_feed",
+                data: {feed_name: feed_name, option: "dev"}       
+                });
+    //prepend feed name an ID to the list
+ };
+
 var updateColor = function (){
     var feeds = $("#feeds > .nav > li")
     feeds.each(function(feed){
@@ -45,7 +57,7 @@ var updateColor = function (){
 var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
     $("#feed-input-btn").click(function(){
-        add_feed()
+        addFeed()
     });
         
         
