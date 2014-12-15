@@ -9,7 +9,7 @@ var TEST_POST_FROM_SERVER = {"url" : "http://www.nytimes.com",
 
 
 //assumes post is a json like object containing all of the requisite fields
-var add_article_to_client = function (post) {
+var addArticleToClient = function (post) {
     var new_article = $("#proto-article .article").clone()
     //TODO: Review process for getting favicon
     new_article.find(".icon").html($('<img />', {src: post.favicon_url}))
@@ -19,17 +19,35 @@ var add_article_to_client = function (post) {
     new_article.find(".description p").html(post.description)
     $(".posts :first").removeClass("current")
     new_article.addClass("current")
-    new_article.prependTo($(".posts"))
-    
+    new_article.prependTo($(".posts"))   
 }
 
 
 
+var addFeed = function () {
+    var feed_name = $("#feed-input").val()
+    console.log(feed_name)
+    request = $.ajax({
+                type: "POST",
+                url: "set_feed",
+                data: {feed_name: feed_name, option: "dev"}       
+                });
+    //prepend feed name an ID to the list
+ };
 
-var main = function() {
- for(i=0; i<5; i++){
-     console.log(i)
-     //add_article(TEST_POST_FROM_SERVER)
- }
-}
+var updateColor = function (){
+    var feeds = $("#feeds > .nav > li")
+    feeds.each(function(feed){
+        console.log(feed.attr("feed_id"))
+        })
+    }
+
+var main = function(){
+    /*Functions that are bound to html objects. To be loaded after the document*/
+    $("#feed-input-btn").click(function(){
+        add_feed()
+    });
+        
+        
+};
 $(document).ready(main);

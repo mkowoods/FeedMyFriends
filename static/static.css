@@ -122,3 +122,16 @@ p {
   margin-top: 0px;
   font-size: 23px;
 }
+
+#add-feed {
+    margin: 0px 0px 40px 0px
+}
+
+#feed-input {
+    width: 70%;
+    float: left;
+}
+
+#feed-input-btn {
+    float: left;
+}

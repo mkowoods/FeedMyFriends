@@ -32,16 +32,21 @@
       </div>
     </nav>
     <div class="container-fluid">
-      <div class="row">
+      <div class="row"> 
         <div class="col-sm-3 col-md-2 sidebar">
-            <form>
-                <input type="text" class="form-control" placeholder="Add Feed...">
-            </form>
-            <ul class="nav nav-sidebar">
-                {% for feed in feeds %}
-                <li><div feed_id = "{{feed.feed_id}}">{{feed.feed_name}}</div></li>
-                {% endfor %}
-            </ul>
+            <div id="add-feed">
+                <div>
+                    <input type="text" id="feed-input" class="form-control" placeholder="Add Feed...">
+                    <button type="button" id="feed-input-btn" class="btn btn-default">+</button>
+                </div>
+            </div>
+            <div id="feeds">
+                <ul class="nav nav-sidebar">
+                    {% for feed in feeds %}
+                    <li><div feed_id = "{{feed.feed_id}}">{{feed.feed_name}}</div></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
             {% for post in wall %}
