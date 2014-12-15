@@ -102,6 +102,7 @@ def get_feed_by_id(eng, feed_id):
 
 
 if __name__ == "__main__":
+    metadata.create_all(PG_ENGINE)
     import time
 
     SAMPLE_POST = {"create_time": 0.0,
