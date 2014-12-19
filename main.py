@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 from urlparse import urlparse
 import scraper
 import json
@@ -29,11 +29,20 @@ def new_post_controller(new_url):
 
 #View
 
+class JSONResponse(Response):
+
+    def __init__(self, response):
+        Response.__init__(self)
+        self.response = response
+        self.mimetype = "application/json"
+
+
 @app.route("/scraper_api", methods=['GET', 'POST'])
 def scraper_api():
     """method to handle the scraping of new posts entered from the browser or other sources"""
-    url = request.args.get('url')
-    return json.dumps(new_post_controller(url))
+    url = request.values.get('url')
+
+    return json.dumps(new_post_controller(url)), 200, {'Content-Type': 'application/json'}
 
 @app.route("/admin")
 def admin():
@@ -57,7 +66,8 @@ def get_posts_by_feed():
 
 @app.route("/get_wall", methods=['GET'])
 def get_wall():
-    return json.dumps(model.model.get_wall())
+    data = json.dumps(model.model.get_wall(),indent=4, separators=(',', ': '))
+    return JSONResponse(response = data)
 
 
 @app.route("/set_feed", methods = ['GET', 'POST'])
@@ -73,19 +83,20 @@ def set_feed():
             out = json.dumps(res)
     return out
 
-@app.route("/set_post", methods = ['GET', 'POST'])
+@app.route("/set_post", methods=['GET', 'POST'])
 def set_post():
-    url = request.args.get('url')
-    feed_id = request.args.get('feed_id')
-    out = "Error"
+    url = request.values.get('url')
+    feed_id = request.values.get('feed_id')
+    if not feed_id:
+        feed_id = "-1"
     if url and feed_id:
         post_data = new_post_controller(url)
         res = model.model.set_post(feed_id, post_data)
         if res:
             out = res
-    return json.dumps(out)
+    return json.dumps(out) if out else "Error"
 
-@app.route("/flush_cache", methods = ['GET', 'POST'])
+@app.route("/flush_cache", methods=['GET', 'POST'])
 def flush_cache():
     submission_key = request.args.get('key')
     if submission_key == ADMIN_KEY:

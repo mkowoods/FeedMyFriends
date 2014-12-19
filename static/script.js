@@ -26,25 +26,32 @@ var addArticleToClient = function (post) {
 
 var addFeed = function () {
     var feed_name = $("#feed-input").val()
-    console.log(feed_name)
+    //console.log(feed_name)
     request = $.ajax({
                 type: "POST",
                 url: "set_feed",
-                data: {feed_name: feed_name, option: "dev"}       
+                data: {feed_name: feed_name}//, option: "dev"}
                 });
-    //prepend feed name an ID to the list
+    //    prepend feed name an ID to the list
+    request.done(function(data){
+        $("#feeds ul").prepend($("<li>").html($("<div>", {feed_id: data, text: feed_name})))
+    });
  };
 
 
 var addPost = function () {
-    var feed_name = $("#feed-input").val()
-    console.log(feed_name)
+    var feed_id = null;
+    var url = $("#post-input").val()
+    //var feed_id = should select current active feed
+    console.log(url)
     request = $.ajax({
                 type: "POST",
-                url: "set_feed",
-                data: {feed_name: feed_name, option: "dev"}       
+                url: "set_post",
+                data: {url: url, feed_id: feed_id} //, option: "dev"}       
                 });
-    //prepend feed name an ID to the list
+    request.done(function(data){
+        console.log(data)
+    });
  };
 
 var updateColor = function (){
@@ -58,6 +65,10 @@ var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
     $("#feed-input-btn").click(function(){
         addFeed()
+    });
+    
+    $("#post-input-btn").click(function(){
+        addPost();
     });
         
         

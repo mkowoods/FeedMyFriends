@@ -46,10 +46,9 @@ class FMFRedisHandler(redis.StrictRedis):
 
         resp = self.hmset('post:'+post_id, post_dict)
         self.zadd('wall', create_time, post_id)
-
         pgdb.set_post(pgdb.PG_ENGINE, post_dict)
 
-        return resp
+        return self.hgetall('post:'+post_id)
 
     def get_wall(self, n=25):
         """return the n most recent post_id's for the wall"""
