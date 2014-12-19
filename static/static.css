@@ -81,9 +81,7 @@ p {
   border-bottom: 1px #e5e5e5 solid;
 }
 
-.current .item {
-  background: rgba(206,220,206,.9);
-}
+
 
 .item {
   cursor: pointer;

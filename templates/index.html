@@ -20,12 +20,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
+            <!--<li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+            <li><a href="#">Profile</a></li>-->
+            <li><a href="#">About</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right post-input-form">
             <input type="text" class="form-control" id="post-input" placeholder="Add Link...">
             <button type="button" id="post-input-btn" class="btn btn-default">+</button>
           </form>
@@ -51,7 +51,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
             {% for post in wall %}
-                <div class="article">    
+                <div class="article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}">    
                     <div class="row item">
                       <div class="col-xs-3">
                         <div class="icon"><img src="{{post.favicon_url}}"></div>

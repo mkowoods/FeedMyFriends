@@ -27,15 +27,30 @@ def new_post_controller(new_url):
 
 
 
-#View
 
+#Misc Support Functions
 class JSONResponse(Response):
 
     def __init__(self, obj):
-        Response.__init__(self)
-        self.response = json.dumps(obj, indent = 4, separators=(',', ': '))
-        self.mimetype = "application/json"
+        Response.__init__(self, json.dumps(obj, indent=4, separators=(',', ': ')),
+                          mimetype = "application/json")
 
+
+def is_admin(submitted_key):
+    return submitted_key == ADMIN_KEY
+
+
+
+#View
+
+@app.route("/delete_post", methods=['GET', 'POST'])
+def delete_key():
+    submission_key = request.args.get('key')
+    post_id = request.args.get('post_id')
+    if is_admin(submission_key):
+         return JSONResponse(model.model.delete_post(post_id))
+    else:
+        return "You're not Admin"
 
 @app.route("/scraper_api", methods=['GET', 'POST'])
 def scraper_api():
@@ -46,12 +61,21 @@ def scraper_api():
 @app.route("/admin")
 def admin():
     submission_key = request.args.get('key')
-    if submission_key == ADMIN_KEY:    
-        tmp ={'redis_conn': model.redis_cache.REDIS_CONN,
-              'postgres_conn': model.redis_cache.pgdb.DB_CONN}
+    if is_admin(submission_key):
+        tmp = {'redis_conn': model.redis_cache.REDIS_CONN,
+               'postgres_conn': model.redis_cache.pgdb.DB_CONN}
         return JSONResponse(tmp)
     else:
         return "Fuck Off!"
+
+@app.route("/flush_cache", methods=['GET', 'POST'])
+def flush_cache():
+    submission_key = request.args.get('key')
+    if submission_key == ADMIN_KEY:
+        res = model.model.flushdb()
+        return JSONResponse(res)
+    else:
+        return 'Failed'
 
 @app.route("/get_feeds", methods=['GET'])
 def get_feeds():
@@ -65,7 +89,7 @@ def get_posts_by_feed():
 
 @app.route("/get_wall", methods=['GET'])
 def get_wall():
-    return JSONResponse(obj = model.model.get_wall())
+    return JSONResponse(obj=model.model.get_wall())
 
 
 @app.route("/set_feed", methods = ['GET', 'POST'])
@@ -84,24 +108,22 @@ def set_feed():
 @app.route("/set_post", methods=['GET', 'POST'])
 def set_post():
     url = request.values.get('url')
-    feed_id = request.values.get('feed_id')
-    if not feed_id:
-        feed_id = "-1"
-    if url and feed_id:
+    feed_id = request.values.get("feed_id")
+    option = request.values.get('option')
+    out = None
+    if url:
         post_data = new_post_controller(url)
-        res = model.model.set_post(feed_id, post_data)
-        if res:
-            out = res
+        if post_data['status'] == "OK":
+            if option == "dev":
+                post_data['status'] = 'DEV'
+                post_data['feed_id'] = feed_id
+                post_data['post_id'] = str(int(time.time()*1000))+'-DevID'
+                post_data['create_time'] = time.time()
+                out = post_data
+            else:
+                out = model.model.set_post(feed_id, post_data)
     return JSONResponse(out) if out else "Error"
 
-@app.route("/flush_cache", methods=['GET', 'POST'])
-def flush_cache():
-    submission_key = request.args.get('key')
-    if submission_key == ADMIN_KEY:
-        res = model.model.flushdb()
-        return JSONResponse(res)
-    else:
-        return 'Failed'
 
 @app.route("/")
 def index():

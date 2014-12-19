@@ -59,9 +59,7 @@ def get_feeds(eng):
     result = eng.execute(s)
     output = []
     for row in result:
-        feed_mapping = {'create_time': row['create_time'],
-                        'feed_name': row['feed_name'],
-                        'feed_id': row['feed_id']}
+        feed_mapping = row_to_dict(row)
         output.append(feed_mapping)
     result.close()
     return output
@@ -76,7 +74,7 @@ def get_n_most_recent_posts_by_feed(eng, feed_id, start_time = 0.0, n = 25):
                             limit(n)
 
     result = eng.execute(s)
-    return result.fetchall()
+    return [row_to_dict(row) for row in result.fetchall()]
 
 def get_wall(eng, n=25):
     s = sql.select([posts]).order_by(-posts.c.create_time).\
@@ -99,6 +97,10 @@ def get_feed_by_id(eng, feed_id):
     s = sql.select([feeds]).where(feeds.c.feed_id == feed_id)
     result = eng.execute(s)
     return row_to_dict(result.fetchone())
+
+def delete_post(eng, post_id):
+    result = eng.execute(posts.delete().where(posts.c.post_id == post_id))
+    return bool(result.rowcount)
 
 
 if __name__ == "__main__":

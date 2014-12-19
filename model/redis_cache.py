@@ -81,16 +81,16 @@ class FMFRedisHandler(redis.StrictRedis):
             self.hmset('feed:'+feed_id, db_feed)
             return db_feed
 
-    def get_posts_by_feed(self, feed_id):
-        posts_by_feed = self.zrevrange('feed_posts:'+str(feed_id), 0, -1)
+    def get_posts_by_feed(self, feed_id, create_time = 0.0):
+        posts_by_feed = self.zrevrange('feed_posts:'+str(feed_id), create_time, -1)
         if posts_by_feed:
             return [self.get_post(post_id) for post_id in posts_by_feed]
         else:
             results = pgdb.get_n_most_recent_posts_by_feed(pgdb.PG_ENGINE, feed_id, start_time=0.0, n=25)
             output = []
             for row in results:
-                self.zadd('feed_posts:'+feed_id, row[1], row[0])
-                output.append(self.get_post(row[0]))
+                self.zadd('feed_posts:'+feed_id, row['create_time'], row['post_id'])
+                output.append(self.get_post(row['post_id']))
             self.expire('feed_posts:'+feed_id, EXPIRATION_TIME)
             return output
 
@@ -106,6 +106,15 @@ class FMFRedisHandler(redis.StrictRedis):
                 self.hmset('feed:'+feed['feed_id'], feed)
             self.expire('feeds', EXPIRATION_TIME)
             return feeds_from_db
+
+    def delete_post(self, post_id):
+        self.delete('post:'+str(post_id))
+        self.zrem('wall', str(post_id))
+        deleted_db = pgdb.delete_post(pgdb.PG_ENGINE, str(post_id))
+        return deleted_db
+
+
+
 
 
 if __name__ == "__main__":
