@@ -10,20 +10,18 @@ var TEST_POST_FROM_SERVER = {"url" : "http://www.nytimes.com",
 
 //assumes post is a json like object containing all of the requisite fields
 var articleJSONtoHTML = function (post) {
-    var new_article = $("#proto-article .article").clone()
+    var new_article = $(".article:first").clone()
     //TODO: Review process for getting favicon
     new_article.attr({feed_id: post.feed_id, post_id: post.post_id})
     new_article.find(".icon").html($('<img />', {src: post.favicon_url}))
     new_article.find(".title").html(($("<a>", {"text":post.title, 
                                                "href": post.url, 
                                                "target": "_blank"})))
-    new_article.find(".description p").html(post.description)
+    new_article.find(".description").html(post.description)
     $(".posts :first").removeClass("current")
     new_article.addClass("current")
     return new_article
 }
-
-
 
 var addFeed = function () {
     var feed_name = $("#feed-input").val()

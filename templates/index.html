@@ -23,7 +23,7 @@
             <!--<li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>-->
-            <li><a href="#">About</a></li>
+            <li><a href="#">About   </a></li>
           </ul>
           <form class="navbar-form navbar-right post-input-form">
             <input type="text" class="form-control" id="post-input" placeholder="Add Link...">
@@ -51,51 +51,22 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
             {% for post in wall %}
-                <div class="article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}">    
-                    <div class="row item">
-                      <div class="col-xs-3">
-                        <div class="icon"><img src="{{post.favicon_url}}"></div>
+                <div class="row article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}">    
+                      <div class="col-xs-3 icon">
+                            <img src="{{post.favicon_url}}">
                       </div>
-
                       <div class="col-xs-6">
-                      <div class="row">                          
-                            <h1 class="title"><a href="{{post.url}}" target="_blank">{{post.title}}</a></h1>
-                      </div>
-                          <div class="row">
-                            <p>{{post.description}}</p>
+                          <div class="row">                          
+                                <h3 class="title"><a href="{{post.url}}" target="_blank">{{post.title}}</a></h3>
                           </div>
+                          <div class="row description">{{post.description}}</div>
                       </div>
-                      <div class="col-xs-3">
-                        <div class="pubdate">{{((current_time - post.create_time|float)/60)|round(1)}} min</div>
-                      </div>
-                    </div>        
+                      <div class="col-xs-3 pubdate">
+                        {{((current_time - post.create_time|float)/60)|round(1)}} min
+                      </div>       
                 </div>                
             {% endfor %}
-        </div>
-          
-      <div id="proto-article" style = "display: none">
-        <div class="article">    
-            <div class="row item">
-              <div class="col-xs-3">
-                <div class="icon">UNKOWN</div>
-              </div>
-              <div class="col-xs-6">
-                <p class="title">This is a prototype for new articles added to the feed</p>
-              </div>
-              <div class="col-xs-3">
-                <p class="pubdate">XXX 99</p>
-              </div>
-            </div>
-            <div class="description row">
-              <div class="col-xs-3">&nbsp;</div>
-              <div class="col-xs-6">
-                <p>United Airlines is to sell up to 30 Boeing 757s to freight operator FedEx Express, with deliveries of the twinjets set to start this year.</p>
-              </div>
-              <div class = "col-xs-3"></div>
-            </div>
-        </div>
-      </div>
-                
+        </div>                
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
