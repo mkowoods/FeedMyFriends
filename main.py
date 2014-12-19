@@ -31,9 +31,9 @@ def new_post_controller(new_url):
 
 class JSONResponse(Response):
 
-    def __init__(self, response):
+    def __init__(self, obj):
         Response.__init__(self)
-        self.response = response
+        self.response = json.dumps(obj, indent = 4, separators=(',', ': '))
         self.mimetype = "application/json"
 
 
@@ -41,8 +41,7 @@ class JSONResponse(Response):
 def scraper_api():
     """method to handle the scraping of new posts entered from the browser or other sources"""
     url = request.values.get('url')
-
-    return json.dumps(new_post_controller(url)), 200, {'Content-Type': 'application/json'}
+    return JSONResponse(new_post_controller(url))
 
 @app.route("/admin")
 def admin():
@@ -50,24 +49,23 @@ def admin():
     if submission_key == ADMIN_KEY:    
         tmp ={'redis_conn': model.redis_cache.REDIS_CONN,
               'postgres_conn': model.redis_cache.pgdb.DB_CONN}
-        return json.dumps(tmp)
+        return JSONResponse(tmp)
     else:
         return "Fuck Off!"
 
 @app.route("/get_feeds", methods=['GET'])
 def get_feeds():
-    return json.dumps(model.model.get_all_feeds())
+    return JSONResponse(model.model.get_all_feeds())
 
 
 @app.route("/get_posts_by_feed", methods=['GET'])
 def get_posts_by_feed():
     feed_id = request.args.get('feed_id')
-    return json.dumps(model.model.get_posts_by_feed(feed_id))
+    return JSONResponse(model.model.get_posts_by_feed(feed_id))
 
 @app.route("/get_wall", methods=['GET'])
 def get_wall():
-    data = json.dumps(model.model.get_wall(),indent=4, separators=(',', ': '))
-    return JSONResponse(response = data)
+    return JSONResponse(obj = model.model.get_wall())
 
 
 @app.route("/set_feed", methods = ['GET', 'POST'])
@@ -80,7 +78,7 @@ def set_feed():
         if option == "dev":
             res = "Testing Received %s"%feed_name
         if res:
-            out = json.dumps(res)
+            out = JSONResponse(res)
     return out
 
 @app.route("/set_post", methods=['GET', 'POST'])
@@ -94,14 +92,14 @@ def set_post():
         res = model.model.set_post(feed_id, post_data)
         if res:
             out = res
-    return json.dumps(out) if out else "Error"
+    return JSONResponse(out) if out else "Error"
 
 @app.route("/flush_cache", methods=['GET', 'POST'])
 def flush_cache():
     submission_key = request.args.get('key')
     if submission_key == ADMIN_KEY:
         res = model.model.flushdb()
-        return json.dumps(res)
+        return JSONResponse(res)
     else:
         return 'Failed'
 

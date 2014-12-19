@@ -44,6 +44,7 @@ class FMFRedisHandler(redis.StrictRedis):
         post_dict['create_time'] = create_time
         post_dict['feed_id'] = feed_id
 
+        #TODO: need to simplify this step too much I/O!! Need to configure background tasks
         resp = self.hmset('post:'+post_id, post_dict)
         self.zadd('wall', create_time, post_id)
         pgdb.set_post(pgdb.PG_ENGINE, post_dict)
