@@ -12,7 +12,7 @@ var TEST_POST_FROM_SERVER = {"url" : "http://www.nytimes.com",
 var articleJSONtoHTML = function (post) {
     var new_article = $(".article:first").clone()
     //TODO: Review process for getting favicon
-    new_article.attr({feed_id: post.feed_id, post_id: post.post_id})
+    new_article.attr({feed_id: post.feed_id, post_id: post.post_id, create_time: post.create_time})
     new_article.find(".icon").html($('<img />', {src: post.favicon_url}))
     new_article.find(".title").html(($("<a>", {"text":post.title, 
                                                "href": post.url, 
@@ -37,7 +37,6 @@ var addFeed = function () {
     });
  };
 
-
 var addPost = function () {
     var feed_id = "-1";
     var url = $("#post-input").val()
@@ -53,13 +52,13 @@ var addPost = function () {
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
-            articleJSONtoHTML(data).prependTo($(".posts"))
+            articleJSONtoHTML(data).appendToTo($(".posts"))
             $(".post-input-form").addClass("has-success")
         }
     });
  };
 
-//NEED TO complete
+//TODO: NEED TO complete
 var updateColor = function (){
     var feeds = $("#feeds > .nav > li")
     feeds.each(function(feed){
@@ -67,28 +66,37 @@ var updateColor = function (){
         })
     }
 
-var filterByFeed = function(feed_id){
-    $(".posts .article").hide();
-    $(".posts div[feed_id='"+feed_id+"']").show();
-    
-};
 
-var fetchPostsByFeed = function(feed_id){
+var filterByFeed = function(feed_id){
+        //set default value for min_time = 0.0
+    
+    var params = {feed_id: feed_id}
+    params['max_time'] = $(".posts div[feed_id='"+feed_id+"']:last").attr("create_time")
+    params['min_time'] = 0.0
+
     request = $.ajax({
             type: "POST",
             url: "get_posts_by_feed",
-            data: {feed_id: feed_id}//, option: "dev"}       
+            data: params//, option: "dev"}       
             });
     request.done(function(data){
         //console.log(data)
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
-            articleJSONtoHTML(data).prependTo($(".posts"))
-            $(".post-input-form").addClass("has-success")
+            $.each(data, function(i, obj){
+                if(params['max_time'] && i === 0){
+                    return true;
+                }else {
+                    articleJSONtoHTML(obj).appendTo($(".posts"));
+                }
+            });
+            $(".posts .article").hide();
+            $(".posts div[feed_id='"+feed_id+"']").show();
         }
     });
 };
+
 
 var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/

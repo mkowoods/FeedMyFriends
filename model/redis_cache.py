@@ -81,17 +81,22 @@ class FMFRedisHandler(redis.StrictRedis):
             self.hmset('feed:'+feed_id, db_feed)
             return db_feed
 
-    def get_posts_by_feed(self, feed_id, create_time = 0.0):
-        posts_by_feed = self.zrevrange('feed_posts:'+str(feed_id), create_time, -1)
-        if posts_by_feed:
-            return [self.get_post(post_id) for post_id in posts_by_feed]
+    def get_posts_by_feed(self, feed_id, min_time=0.0, max_time=float('inf')):
+        key = 'feed_posts:'+str(feed_id)
+        if self.exists(key):
+            print("hit cache")
+            return [self.get_post(post_id) for post_id in self.zrevrangebyscore(key, max_time, min_time)]
         else:
+            print("hit db")
             results = pgdb.get_n_most_recent_posts_by_feed(pgdb.PG_ENGINE, feed_id, start_time=0.0, n=25)
             output = []
             for row in results:
-                self.zadd('feed_posts:'+feed_id, row['create_time'], row['post_id'])
-                output.append(self.get_post(row['post_id']))
-            self.expire('feed_posts:'+feed_id, EXPIRATION_TIME)
+                #function adds the top 25 records to the results, but only outputs results
+                #between the min and max time
+                self.zadd(key, row['create_time'], row['post_id'])
+                if min_time <= row['create_time'] <= max_time:
+                    output.append(self.get_post(row['post_id']))
+            self.expire(key, EXPIRATION_TIME)
             return output
 
 
@@ -120,6 +125,7 @@ class FMFRedisHandler(redis.StrictRedis):
 if __name__ == "__main__":
     redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6379'))
     rs = FMFRedisHandler(host=redis_url.hostname, port=redis_url.port, db=0, password=redis_url.password)
+    print rs.get_posts_by_feed('test_id9', 1418370691, 1418370691.468)
 
 
 

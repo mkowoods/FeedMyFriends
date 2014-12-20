@@ -82,10 +82,20 @@ def get_feeds():
     return JSONResponse(model.model.get_all_feeds())
 
 
-@app.route("/get_posts_by_feed", methods=['GET'])
+@app.route("/get_posts_by_feed", methods=['GET', 'POST'])
 def get_posts_by_feed():
-    feed_id = request.args.get('feed_id')
-    return JSONResponse(model.model.get_posts_by_feed(feed_id))
+    feed_id = request.values.get('feed_id')
+    max_time = request.values.get('max_time')
+    min_time = request.values.get('min_time')
+    try:
+        max_time = float(max_time) if max_time else float('inf')
+        min_time = float(min_time) if min_time else 0.0
+        return JSONResponse(model.model.get_posts_by_feed(feed_id, min_time=min_time, max_time=max_time))
+    except ValueError:
+        return "Parameter failed Conversion To Float"
+    else:
+        return "Error"
+
 
 @app.route("/get_wall", methods=['GET'])
 def get_wall():

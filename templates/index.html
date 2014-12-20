@@ -51,7 +51,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
             {% for post in wall %}
-                <div class="row article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}">    
+                <div class="row article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}" create_time="{{post.create_time}}">    
                       <div class="col-xs-3 icon">
                             <img src="{{post.favicon_url}}">
                       </div>
