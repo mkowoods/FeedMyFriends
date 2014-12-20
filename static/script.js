@@ -46,7 +46,7 @@ var addPost = function () {
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
-            articleJSONtoHTML(data).appendToTo($(".posts"))
+            articleJSONtoHTML(data).appendTo($(".posts"))
             $(".post-input-form").addClass("has-success")
         }
     });

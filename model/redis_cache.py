@@ -69,6 +69,11 @@ class FMFRedisHandler(redis.StrictRedis):
             return cache_post
         else:
             db_post = pgdb.get_post(pgdb.PG_ENGINE, post_id)
+            try:
+                db_post['description'] = db_post['description'].encode("ascii", "replace")
+            except:
+                print db_post['description']
+                print type(db_post['description'])
             self.hmset('post:'+post_id, db_post)
             return db_post
 
