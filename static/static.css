@@ -46,7 +46,6 @@ body {
   margin-left: -20px;
 }
 
-
 .nav-sidebar > li > div{
     color: #337ab7;
     margin-left: 20px;
@@ -85,7 +84,6 @@ p {
   border-bottom: 1px #e5e5e5 solid;
 }
 
-
 .article .icon{
     padding: 10px;
     margin: auto
@@ -102,5 +100,9 @@ p {
 #feed-input {
     width: 70%;
     float: left;
+}
+
+#add-feed {
+    margin: 10px;
 }
 

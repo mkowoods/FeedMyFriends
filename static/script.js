@@ -1,10 +1,4 @@
-var TEST_POST_FROM_SERVER = {"url" : "http://www.nytimes.com", 
-                             "description" : "Fake Post for nytimes",
-                             "title": "nytimes site",
-                             "host_name": "www.nytimes.com",
-                             "favicon_url": "http://static01.nyt.com/favicon.ico",
-                            };
-                             
+var COLOR_MAP = {}                         
                         
 
 
@@ -41,14 +35,14 @@ var addPost = function () {
     var feed_id = "-1";
     var url = $("#post-input").val()
     //var feed_id = should select current active feed
-    console.log(url)
+    //console.log(url)
     request = $.ajax({
                 type: "POST",
                 url: "set_post",
                 data: {url: url, feed_id: feed_id}//, option: "dev"}       
                 });
     request.done(function(data){
-        console.log(data)
+        //console.log(data)
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
@@ -58,14 +52,6 @@ var addPost = function () {
     });
  };
 
-//TODO: NEED TO complete
-var updateColor = function (){
-    var feeds = $("#feeds > .nav > li")
-    feeds.each(function(feed){
-        console.log(feed.attr("feed_id"))
-        })
-    }
-
 
 var filterByFeed = function(feed_id){
         //set default value for min_time = 0.0
@@ -73,7 +59,7 @@ var filterByFeed = function(feed_id){
     var params = {feed_id: feed_id}
     params['max_time'] = $(".posts div[feed_id='"+feed_id+"']:last").attr("create_time")
     params['min_time'] = 0.0
-    console.log(params)
+    //console.log(params)
     request = $.ajax({
             type: "POST",
             url: "get_posts_by_feed",
@@ -91,12 +77,22 @@ var filterByFeed = function(feed_id){
                     articleJSONtoHTML(obj).appendTo($(".posts"));
                 }
             });
-            $(".posts .article").hide();
-            $(".posts div[feed_id='"+feed_id+"']").show();
+            $(".posts .article").hide("fast");
+            $(".posts div[feed_id='"+feed_id+"']").show("slow");
         }
     });
 };
 
+
+//TODO: NEED TO complete
+var updateColor = function (){
+    var colors = fmf_colors
+    var feeds = $("#feeds .nav li")
+    feeds.each(function(idx){
+        console.log($(this).find("div").attr("feed_id"))
+        $(this).css('background-color', fmf_colors[idx % fmf_colors.length])
+        })
+    }
 
 var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
@@ -117,7 +113,7 @@ var main = function(){
         //console.log("hit div")
         if($(this).hasClass('active')){
             $(this).removeClass('active');
-            $(".posts .article").show();
+            $(".posts .article").show("slow");
         }else{   
             $("#feeds li.active").removeClass('active')
             $(this).addClass('active')
