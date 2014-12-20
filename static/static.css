@@ -55,6 +55,10 @@ body {
 
 .nav-sidebar > li:hover,
 .nav-sidebar > li:focus {
+    border: solid 1px
+}
+
+.nav-sidebar > .active {
   color: #fff;
   background-color: #DBDBDB;
 }

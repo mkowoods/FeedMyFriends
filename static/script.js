@@ -73,7 +73,7 @@ var filterByFeed = function(feed_id){
     var params = {feed_id: feed_id}
     params['max_time'] = $(".posts div[feed_id='"+feed_id+"']:last").attr("create_time")
     params['min_time'] = 0.0
-
+    console.log(params)
     request = $.ajax({
             type: "POST",
             url: "get_posts_by_feed",
@@ -112,11 +112,19 @@ var main = function(){
         $(".post-input-form").removeClass("has-error has-success")
     });
     
-    $("#feeds li div").click(function(){
-        var feed_id = $(this).attr('feed_id');
-        filterByFeed(feed_id);
+    
+    $("#feeds li").click(function(){
+        //console.log("hit div")
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            $(".posts .article").show();
+        }else{   
+            $("#feeds li.active").removeClass('active')
+            $(this).addClass('active')
+            var feed_id = $(this).find('div').attr('feed_id');
+            filterByFeed(feed_id);
+        }
     });
-                                 
         
 };
 $(document).ready(main);
