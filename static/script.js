@@ -35,18 +35,18 @@ var addPost = function () {
     var feed_id = "-1";
     var url = $("#post-input").val()
     //var feed_id = should select current active feed
-    //console.log(url)
+    console.log(url)
     request = $.ajax({
                 type: "POST",
                 url: "set_post",
                 data: {url: url, feed_id: feed_id}//, option: "dev"}       
                 });
     request.done(function(data){
-        //console.log(data)
+        console.log(data)
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
-            articleJSONtoHTML(data).appendTo($(".posts"))
+            articleJSONtoHTML(data).prependTo($(".posts"))
             $(".post-input-form").addClass("has-success")
         }
     });

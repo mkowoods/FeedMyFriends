@@ -3,6 +3,7 @@ import time
 import redis
 import os
 import postgres_db as pgdb
+import logging
 
 
 REDIS_CONN = os.environ.get('REDISTOGO_URL', 'redis://localhost:6379')
@@ -47,7 +48,13 @@ class FMFRedisHandler(redis.StrictRedis):
         #TODO: need to simplify this step too much I/O!! Need to configure background tasks
         resp = self.hmset('post:'+post_id, post_dict)
         self.zadd('wall', create_time, post_id)
-        pgdb.set_post(pgdb.PG_ENGINE, post_dict)
+        pgdb.set_post(pgdb.PG_ENGINE, feed_id = post_dict['feed_id'],
+                                      create_time = post_dict['create_time'],
+                                      post_id=post_dict['post_id'],
+                                      favicon_url = post_dict['favicon_url'],
+                                      description = post_dict['description'],
+                                      title = post_dict['title'],
+                                      url = post_dict['url'])
 
         return self.hgetall('post:'+post_id)
 

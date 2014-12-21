@@ -47,11 +47,14 @@ def set_feed(eng, feed_id, feed_name, create_time):
     result = eng.execute(ins)
     return result
 
-def set_post(eng, *args):
-    ins = posts.insert()
-    result = eng.execute(ins, args)
+def set_post(eng, post_id, create_time, feed_id, title, url, description, favicon_url):
+    ins = posts.insert().values(post_id = post_id, create_time = create_time,
+                                feed_id = feed_id, title=title,
+                                url = url, description = description,
+                                favicon_url = favicon_url
+                                )
+    result = eng.execute(ins)
     return result
-
 
 def get_feeds(eng):
     s = sql.select([feeds]).\
