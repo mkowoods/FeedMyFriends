@@ -3,7 +3,7 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Flo
 import os
 
 
-DB_CONN = os.environ.get('HEROKU_POSTGRESQL_BLACK_URL', "postgresql://mwoods@localhost/fmfapp")
+DB_CONN = os.environ.get('HEROKU_POSTGRESQL_PURPLE_URL', "postgresql://mwoods@localhost/fmfapp")
 
 PG_ENGINE = create_engine(DB_CONN)
 
