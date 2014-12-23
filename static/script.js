@@ -61,7 +61,7 @@ var filterByFeed = function(feed_id){
     params['min_time'] = 0.0
     //console.log(params)
     request = $.ajax({
-            type: "POST",
+            type: "GET",
             url: "get_posts_by_feed",
             data: params//, option: "dev"}       
             });

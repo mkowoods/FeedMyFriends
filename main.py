@@ -43,7 +43,7 @@ def is_admin(submitted_key):
 
 #View
 
-@app.route("/delete_post", methods=['GET', 'POST'])
+@app.route("/delete_post", methods=['DELETE'])
 def delete_key():
     submission_key = request.args.get('key')
     post_id = request.args.get('post_id')
@@ -52,13 +52,13 @@ def delete_key():
     else:
         return "You're not Admin"
 
-@app.route("/scraper_api", methods=['GET', 'POST'])
+@app.route("/scraper_api", methods=['GET'])
 def scraper_api():
     """method to handle the scraping of new posts entered from the browser or other sources"""
     url = request.values.get('url')
     return JSONResponse(new_post_controller(url))
 
-@app.route("/admin")
+@app.route("/admin", methods=['GET'])
 def admin():
     submission_key = request.args.get('key')
     if is_admin(submission_key):
@@ -68,7 +68,7 @@ def admin():
     else:
         return "Fuck Off!"
 
-@app.route("/flush_cache", methods=['GET', 'POST'])
+@app.route("/flush_cache", methods=['DELETE'])
 def flush_cache():
     submission_key = request.args.get('key')
     if submission_key == ADMIN_KEY:
@@ -82,7 +82,7 @@ def get_feeds():
     return JSONResponse(model.model.get_all_feeds())
 
 
-@app.route("/get_posts_by_feed", methods=['GET', 'POST'])
+@app.route("/get_posts_by_feed", methods=['GET'])
 def get_posts_by_feed():
     feed_id = request.values.get('feed_id')
     max_time = request.values.get('max_time')
@@ -102,7 +102,7 @@ def get_wall():
     return JSONResponse(obj=model.model.get_wall())
 
 
-@app.route("/set_feed", methods = ['GET', 'POST'])
+@app.route("/set_feed", methods = ['POST'])
 def set_feed():
     feed_name = request.values.get('feed_name')
     option = request.values.get('option')
@@ -115,7 +115,7 @@ def set_feed():
             out = JSONResponse(res)
     return out
 
-@app.route("/set_post", methods=['GET', 'POST'])
+@app.route("/set_post", methods=['POST'])
 def set_post():
     url = request.values.get('url')
     feed_id = request.values.get("feed_id")
