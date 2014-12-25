@@ -5,6 +5,7 @@ import json
 import time
 import model
 import os
+import logging
 
 app = Flask(__name__)
 ADMIN_KEY = os.environ.get('ADMIN_KEY', 'LOCAL')
@@ -142,7 +143,11 @@ def index():
     feeds = model.model.get_all_feeds()
     wall = model.model.get_wall()
     current_time = time.time()
-    return render_template("index.html", feeds = feeds, wall = wall, current_time = current_time)
+    try:
+        return render_template("index.html", feeds = feeds, wall = wall, current_time = current_time)
+    except Exception, e:
+        logging.error(e)
+        return "Error"
 
 
 if __name__ == "__main__":

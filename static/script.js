@@ -126,7 +126,7 @@ var feedSearch = function(el) {
     var post_id = $(el).parents(".article").attr("post_id")
     
     search_bar.keyup(function(e){
-        $("#feeds li div").css('background-color', "")
+        $("#feeds li").css('background-color', "")
         $("#feeds li div").hide()
         search_bar.parent().removeClass("has-error has-success has-warning")
         var search_str = search_bar.val()

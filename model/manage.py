@@ -9,3 +9,6 @@ def insert(eng, table, **kwargs):
     ins = table.insert().values(kwargs)
     result = eng.execute(ins)
     return result
+
+
+
