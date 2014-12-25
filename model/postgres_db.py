@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, exc, sql
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Float
 import os
-
+import time
 
 DB_CONN = os.environ.get('HEROKU_POSTGRESQL_PURPLE_URL', "postgresql://mwoods@localhost/fmfapp")
 
@@ -38,6 +38,21 @@ keywords = Table('keywords', metadata,
                  Column('attribute2', String)
 )
 
+posts_feeds = Table('posts_feeds', metadata,
+                    Column('id', String, primary_key=True),
+                    Column('post_id', String),
+                    Column('feed_id', String),
+                    Column('create_time', Float))
+
+def insert(eng, table, **kwargs):
+    ins = table.insert().values(kwargs)
+    result = eng.execute(ins)
+    return result
+
+def get_all_rows(eng, table):
+    s = sql.select([table])
+    result = eng.execute(s)
+    return result
 
 def row_to_dict(row):
     return dict(zip(row.keys(), row.values()))
@@ -68,13 +83,15 @@ def get_feeds(eng):
     return output
 
 
-def get_n_most_recent_posts_by_feed(eng, feed_id, start_time = 0.0, n = 25):
-    """returns a tuple of (post_id, create_time) that are associated with th given feed_id"""
-    s = sql.select([posts.c.post_id, posts.c.create_time]).\
-                            where(posts.c.create_time > start_time).\
-                            where(posts.c.feed_id == feed_id).\
-                            order_by(-posts.c.create_time).\
-                            limit(n)
+def get_n_most_recent_posts_by_feed(eng, feed_id, ub_time = float('inf'), n = 25):
+    """returns the first 25 records less than the upper bound time
+        can iterate through the list by taking the lowest time of the result and passing back
+        into the function"""
+    s = sql.select([posts_feeds]).\
+                    where(posts_feeds.c.create_time < ub_time).\
+                    where(posts_feeds.c.feed_id == feed_id).\
+                    order_by(-posts_feeds.c.create_time).\
+                    limit(n)
 
     result = eng.execute(s)
     return [row_to_dict(row) for row in result.fetchall()]
@@ -105,37 +122,19 @@ def delete_post(eng, post_id):
     result = eng.execute(posts.delete().where(posts.c.post_id == post_id))
     return bool(result.rowcount)
 
+def add_post_to_feed(eng, post_id, feed_id):
+    """Takes in a post_id and feed_id and upon completion returns the primary key created
+    If there's a conflict in the database it will return an IntegrityError
+    (IntegrityError) duplicate key value violates unique constraint "posts_feeds_pkey"
+    """
+    uid = feed_id+"|"+post_id
+    res = insert(eng, posts_feeds, id = uid,
+                                    post_id = post_id,
+                                    feed_id = feed_id,
+                                    create_time = time.time())
+    return res.inserted_primary_key
+
+
 
 if __name__ == "__main__":
     metadata.create_all(PG_ENGINE)
-    import time
-
-    SAMPLE_POST = {"create_time": 0.0,
-                    "post_id": None,
-                    "feed_id": None,
-                    "url" : "http://www.nytimes.com",
-                    "description" : "Fake Post for nytimes Fake Post for nytimes Fake Post for nytimes",
-                    "title": "nytimes site",
-                    "host_name": "www.nytimes.com",
-                    "favicon_url": "http://static01.nyt.com/favicon.ico"
-                    }
-    def drop_and_replace_database():
-        metadata.drop_all(PG_ENGINE)
-        metadata.create_all(PG_ENGINE)
-
-    def sample():
-        try:
-            GLOBAL_TITLE_PREFIX = SAMPLE_POST['title']
-            for i in range(10):
-                feed_id = 'test_id%s'%(i)
-                create_time = time.time()
-                tmp = set_feed(PG_ENGINE, feed_id, 'Feed %s'%i, create_time)
-                for j in range(5):
-                    SAMPLE_POST['create_time'] = time.time()
-                    SAMPLE_POST['post_id'] = 'test_post-%s-%s'%(i,j)
-                    SAMPLE_POST['feed_id'] = feed_id
-                    SAMPLE_POST['title'] = GLOBAL_TITLE_PREFIX+"-"+feed_id
-                    tmp = set_post(PG_ENGINE, SAMPLE_POST)
-        except exc.IntegrityError:
-            print "Key Already Exists"
-        print get_n_most_recent_feeds(PG_ENGINE)

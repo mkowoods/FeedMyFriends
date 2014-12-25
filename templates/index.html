@@ -51,7 +51,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-sm-offset-2 posts">
             {% for post in wall %}
-                <div class="row article" feed_id="{{post.feed_id}}" post_id="{{post.post_id}}" create_time="{{post.create_time}}">    
+                <div class="row article" post_id="{{post.post_id}}" create_time="{{post.create_time}}">
                       <div class="col-xs-3 icon">
                             <img src="{{post.favicon_url}}">
                       </div>
@@ -61,10 +61,16 @@
                           </div>
                           <div class="row description">{{post.description}}</div>
                       </div>
-                      <div class="col-xs-3 pubdate">
-                        {{((current_time - post.create_time|float)/60)|round(1)}} min
-                      </div>       
-                </div>                
+                      <div class="col-xs-3 article-right-panel">
+                          <div class="time-since-post">{{((current_time - post.create_time|float)/60)|round(1)}} min</div>
+                          <a class="add-feed-btn" href="#">Add Feed</a> | <a href="#">Like</a>
+                          <div class="form-group feed-search">
+                            <input class="form-control feed-search-bar" type="text" placeholder="Feed..."></input>
+                          </div>
+                    </div>
+                    
+                </div>   
+                
             {% endfor %}
         </div>                
 

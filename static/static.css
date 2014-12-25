@@ -93,7 +93,7 @@ p {
     margin-top: 10px;
 }
 
-.article .pubdate {
+.article-right-panel {
     margin-top: 10px;
 }
 
@@ -106,3 +106,6 @@ p {
     margin: 10px;
 }
 
+.feed-search {
+    display: none;
+}

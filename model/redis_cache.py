@@ -93,23 +93,6 @@ class FMFRedisHandler(redis.StrictRedis):
             self.hmset('feed:'+feed_id, db_feed)
             return db_feed
 
-    def get_posts_by_feed(self, feed_id, min_time=0.0, max_time=float('inf')):
-        key = 'feed_posts:'+str(feed_id)
-        if self.exists(key):
-            print("hit cache")
-            return [self.get_post(post_id) for post_id in self.zrevrangebyscore(key, max_time, min_time)]
-        else:
-            print("hit db")
-            results = pgdb.get_n_most_recent_posts_by_feed(pgdb.PG_ENGINE, feed_id, start_time=0.0, n=25)
-            output = []
-            for row in results:
-                #function adds the top 25 records to the results, but only outputs results
-                #between the min and max time
-                self.zadd(key, row['create_time'], row['post_id'])
-                if min_time <= row['create_time'] <= max_time:
-                    output.append(self.get_post(row['post_id']))
-            self.expire(key, EXPIRATION_TIME)
-            return output
 
 
     def get_all_feeds(self):
@@ -130,8 +113,50 @@ class FMFRedisHandler(redis.StrictRedis):
         deleted_db = pgdb.delete_post(pgdb.PG_ENGINE, str(post_id))
         return deleted_db
 
+    def add_post_to_feed(self, post_id, feed_id):
+        """Input: post_id str, feed_id str
+           Output: the unique combination of feed_id|post_id
+           If the post already exists in the feeds list then it returns the score(create time) from cache
+           Otherwise it creates the record in the PGDB and return the unique id after adding to the cache
+        """
+        key = 'feed_posts:'+feed_id
+        if self.zscore(key, post_id):
+            print('hit cache')
+            return feed_id+"|"+post_id
+        else:
+            print('hit db')
+            self.zadd(key, time.time(), post_id)
+            res = pgdb.add_post_to_feed(pgdb.PG_ENGINE, post_id, feed_id)
+            return res[0]
 
 
+    def get_posts_by_feed(self, feed_id, min_time=0.0, max_time=float('inf')):
+        """
+        :param feed_id:
+        :param min_time:
+        :param max_time:
+        :return: A list of dictionaries representing the 100 Most recent posts associated to a given feed
+        """
+        #TODO: Need to make the calculation iterative as the number of posts grows
+        key = 'feed_posts:'+str(feed_id)
+        if self.exists(key):
+            print("hit cache")
+            return [self.get_post(post_id) for post_id in self.zrevrangebyscore(key, max_time, min_time)]
+        else:
+            print("hit db")
+            results = pgdb.get_n_most_recent_posts_by_feed(pgdb.PG_ENGINE,
+                                                           feed_id,
+                                                           ub_time = max_time,
+                                                           n=100)
+            output = []
+            for row in results:
+                #function adds the top 25 records to the results, but only outputs results
+                #between the min and max time
+                self.zadd(key, row['create_time'], row['post_id'])
+                if min_time <= row['create_time'] <= max_time:
+                    output.append(self.get_post(row['post_id']))
+            self.expire(key, EXPIRATION_TIME)
+            return output
 
 
 if __name__ == "__main__":

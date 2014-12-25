@@ -25,9 +25,6 @@ def new_post_controller(new_url):
 
     return post
 
-
-
-
 #Misc Support Functions
 class JSONResponse(Response):
 
@@ -38,8 +35,6 @@ class JSONResponse(Response):
 
 def is_admin(submitted_key):
     return submitted_key == ADMIN_KEY
-
-
 
 #View
 
@@ -64,9 +59,9 @@ def admin():
     if is_admin(submission_key):
         tmp = {'redis_conn': model.redis_cache.REDIS_CONN,
                'postgres_conn': model.redis_cache.pgdb.DB_CONN}
-        return JSONResponse(tmp)
+        return JSONResponse(tmp), 200
     else:
-        return "Fuck Off!"
+        return JSONResponse("{status: 404}"), 404
 
 @app.route("/flush_cache", methods=['DELETE'])
 def flush_cache():
@@ -134,6 +129,13 @@ def set_post():
                 out = model.model.set_post(feed_id, post_data)
     return JSONResponse(out) if out else "Error"
 
+@app.route("/assign_feed_to_post", methods=['POST'])
+def assign_feed_to_post():
+    feed_id = request.form['feed_id']
+    post_id = request.form['post_id']
+    key = model.model.add_post_to_feed(post_id=post_id, feed_id=feed_id)
+    out = {'status':'OK', 'key':key} if key else {'status': 'Error'}
+    return JSONResponse(out)
 
 @app.route("/")
 def index():

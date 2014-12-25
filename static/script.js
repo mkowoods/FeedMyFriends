@@ -1,6 +1,11 @@
 var COLOR_MAP = {}                         
                         
-
+//Done to override jquery and make contain case insensitive, which is used in the feedSearch function
+jQuery.expr[":"].containsIgnoreCase = jQuery.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
 
 //assumes post is a json like object containing all of the requisite fields
 var articleJSONtoHTML = function (post) {
@@ -12,8 +17,7 @@ var articleJSONtoHTML = function (post) {
                                                "href": post.url, 
                                                "target": "_blank"})))
     new_article.find(".description").html(post.description)
-    $(".posts :first").removeClass("current")
-    new_article.addClass("current")
+    $(".time-since-post").html("0.0 min")
     return new_article
 }
 
@@ -52,12 +56,29 @@ var addPost = function () {
     });
  };
 
+var addPostToFeed = function(post_id, feed_id, callback_function) {
+    request = $.ajax({
+        type: "POST",
+        url: "assign_feed_to_post",
+        data: {post_id: post_id, feed_id: feed_id}
+    });
+    request.done(function(data){
+        if(data.status == "OK"){
+            console.log(post_id+" has been added to feed:"+feed_id)
+            callback_function(false)
+        }else {
+            console.log("Error")
+            callback_function(true);
+        }
+        
+    });
+};
 
 var filterByFeed = function(feed_id){
         //set default value for min_time = 0.0
     
     var params = {feed_id: feed_id}
-    params['max_time'] = $(".posts div[feed_id='"+feed_id+"']:last").attr("create_time")
+    //params['max_time'] = $(".posts div[feed_id='"+feed_id+"']:last").attr("create_time")
     params['min_time'] = 0.0
     //console.log(params)
     request = $.ajax({
@@ -67,18 +88,22 @@ var filterByFeed = function(feed_id){
             });
     request.done(function(data){
         //console.log(data)
+        $(".posts .article").hide("fast");
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
             $.each(data, function(i, obj){
                 if(params['max_time'] && i === 0){
                     return true;
-                }else {
+                } else if ($(".posts div[post_id='"+obj.post_id+"']").length){
+                    $(".posts div[post_id='"+obj.post_id+"']").show("slow")       
+                }
+                else {
                     articleJSONtoHTML(obj).appendTo($(".posts"));
                 }
             });
-            $(".posts .article").hide("fast");
-            $(".posts div[feed_id='"+feed_id+"']").show("slow");
+            
+            //$(".posts div[feed_id='"+feed_id+"']").show("slow");
         }
     });
 };
@@ -93,6 +118,62 @@ var updateColor = function (){
         $(this).css('background-color', fmf_colors[idx % fmf_colors.length])
         })
     }
+
+var feedSearch = function(el) {
+    //accepts a jquery element and then binds to it  the keydown handler to create the
+    //search funtion
+    var search_bar = $(el)
+    var post_id = $(el).parents(".article").attr("post_id")
+    
+    search_bar.keyup(function(e){
+        $("#feeds li div").css('background-color', "")
+        $("#feeds li div").hide()
+        search_bar.parent().removeClass("has-error has-success has-warning")
+        var search_str = search_bar.val()
+        
+        if(search_str !== ""){
+            var search_results = $("#feeds li div:containsIgnoreCase("+search_str+")")
+            search_results.show()
+        } else {
+            $("#feeds li div").show()
+        }
+        
+        if(search_results == undefined){
+            search_bar.parent().addClass("has-error")
+        } else if (search_results.length === 1){
+            search_bar.parent().addClass("has-success")
+            console.log(search_bar)
+            if(e.keyCode == 13){
+                //var resp_html = "<div id='added-alert'>Added "+search_str+"</div>"
+                //teardown of searchbar event
+                var tearDownSearchBar = function(hasError) {
+                    search_bar.val("")
+                    //search_bar.off("keyup")
+                    search_bar.parent().removeClass("has-success")
+                    //
+                    if (hasError){
+                        var resp_html = "<div id='added-alert'>Sorry We had an Error</div>"
+                    } else {
+                        var resp_html = "<div id='added-alert'>Added to "+search_str+"</div>"
+                    }
+                    search_bar.parent().append(resp_html)
+                    $("#added-alert").fadeIn(1500, function() {
+                        $(this).fadeOut(1500, function(){
+                            $(this).remove()
+                        });   
+                    });
+                };
+                
+                addPostToFeed(post_id, search_results.attr('feed_id'), tearDownSearchBar)
+
+                $("#feeds li div").show("slow")
+                
+            };
+        } else {
+            search_bar.parent().addClass("has-error")
+        }
+    });
+}
 
 var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
@@ -120,6 +201,13 @@ var main = function(){
             var feed_id = $(this).find('div').attr('feed_id');
             filterByFeed(feed_id);
         }
+    });
+    
+    $(".add-feed-btn").click(function() {
+        var feed_search_form = $(this).siblings(".feed-search")
+        feed_search_form.toggle()
+        feedSearch(feed_search_form.find(".feed-search-bar"))
+        return false;
     });
         
 };
