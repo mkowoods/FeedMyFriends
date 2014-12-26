@@ -11,13 +11,13 @@ jQuery.expr[":"].containsIgnoreCase = jQuery.expr.createPseudo(function(arg) {
 var articleJSONtoHTML = function (post) {
     var new_article = $(".article:first").clone()
     //TODO: Review process for getting favicon
-    new_article.attr({feed_id: post.feed_id, post_id: post.post_id, create_time: post.create_time})
+    new_article.attr({post_id: post.post_id, create_time: post.create_time})
     new_article.find(".icon").html($('<img />', {src: post.favicon_url}))
     new_article.find(".title").html(($("<a>", {"text":post.title, 
                                                "href": post.url, 
                                                "target": "_blank"})))
     new_article.find(".description").html(post.description)
-    $(".time-since-post").html("0.0 min")
+    new_article.find(".time-since-post").html("0.0 min")
     return new_article
 }
 
@@ -39,14 +39,14 @@ var addPost = function () {
     var feed_id = "-1";
     var url = $("#post-input").val()
     //var feed_id = should select current active feed
-    console.log(url)
+    //console.log(url)
     request = $.ajax({
                 type: "POST",
                 url: "set_post",
                 data: {url: url, feed_id: feed_id}//, option: "dev"}       
                 });
     request.done(function(data){
-        console.log(data)
+        //console.log(data)
         if (data === "Error"){
             $(".post-input-form").addClass("has-error")
         } else {
@@ -64,10 +64,10 @@ var addPostToFeed = function(post_id, feed_id, callback_function) {
     });
     request.done(function(data){
         if(data.status == "OK"){
-            console.log(post_id+" has been added to feed:"+feed_id)
+            //console.log(post_id+" has been added to feed:"+feed_id)
             callback_function(false)
         }else {
-            console.log("Error")
+            //console.log("Error")
             callback_function(true);
         }
         
@@ -123,6 +123,8 @@ var feedSearch = function(el) {
     //accepts a jquery element and then binds to it  the keydown handler to create the
     //search funtion
     var search_bar = $(el)
+    //console.log("Search bar from init of feedSearch")
+    //console.log(search_bar)
     var post_id = $(el).parents(".article").attr("post_id")
     
     search_bar.keyup(function(e){
@@ -142,15 +144,12 @@ var feedSearch = function(el) {
             search_bar.parent().addClass("has-error")
         } else if (search_results.length === 1){
             search_bar.parent().addClass("has-success")
-            console.log(search_bar)
+            //console.log("Search Bar from successful results")
+            //console.log(search_bar)
             if(e.keyCode == 13){
-                //var resp_html = "<div id='added-alert'>Added "+search_str+"</div>"
-                //teardown of searchbar event
-                var tearDownSearchBar = function(hasError) {
+                var _tearDownSearchBar = function(hasError) {
                     search_bar.val("")
-                    //search_bar.off("keyup")
                     search_bar.parent().removeClass("has-success")
-                    //
                     if (hasError){
                         var resp_html = "<div id='added-alert'>Sorry We had an Error</div>"
                     } else {
@@ -163,8 +162,7 @@ var feedSearch = function(el) {
                         });   
                     });
                 };
-                
-                addPostToFeed(post_id, search_results.attr('feed_id'), tearDownSearchBar)
+                addPostToFeed(post_id, search_results.attr('feed_id'), _tearDownSearchBar)
 
                 $("#feeds li div").show("slow")
                 
@@ -203,7 +201,8 @@ var main = function(){
         }
     });
     
-    $(".add-feed-btn").click(function() {
+    $("body").on("click", ".add-feed-btn", function() {
+        console.log($(this))
         var feed_search_form = $(this).siblings(".feed-search")
         feed_search_form.toggle()
         feedSearch(feed_search_form.find(".feed-search-bar"))
