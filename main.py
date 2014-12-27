@@ -143,6 +143,7 @@ def index():
     feeds = model.model.get_all_feeds()
     wall = model.model.get_wall()
     current_time = time.time()
+
     try:
         return render_template("index.html", feeds = feeds, wall = wall, current_time = current_time)
     except Exception, e:

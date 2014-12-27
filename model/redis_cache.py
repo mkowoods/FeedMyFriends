@@ -11,7 +11,10 @@ REDIS_CONN = os.environ.get('REDISTOGO_URL', 'redis://localhost:6379')
 redis_url = urlparse.urlparse(REDIS_CONN)
 
 #Default 3 hours per key
-EXPIRATION_TIME = 3600*3
+EXPIRATION_TIME = 3600*48
+
+def make_unicode_safe(str, default_encoding = "utf-8"):
+    return unicode(str, default_encoding) if type(str) == type("") else str
 
 class FMFRedisHandler(redis.StrictRedis):
 
