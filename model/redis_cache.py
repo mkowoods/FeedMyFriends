@@ -51,8 +51,8 @@ class FMFRedisHandler(redis.StrictRedis):
         #TODO: need to simplify this step too much I/O!! Need to configure background tasks
         resp = self.hmset('post:'+post_id, post_dict)
         self.zadd('wall', create_time, post_id)
-        pgdb.set_post(pgdb.PG_ENGINE, feed_id = post_dict['feed_id'],
-                                      create_time = post_dict['create_time'],
+        pgdb.set_post(pgdb.PG_ENGINE, feed_id=post_dict['feed_id'],
+                                      create_time=post_dict['create_time'],
                                       post_id=post_dict['post_id'],
                                       favicon_url = post_dict['favicon_url'],
                                       description = post_dict['description'],
@@ -76,16 +76,11 @@ class FMFRedisHandler(redis.StrictRedis):
     def get_post(self, post_id):
         cache_post = self.hgetall('post:'+str(post_id))
         if cache_post:
+            cache_post['description'] = make_unicode_safe(cache_post['description'])
+            cache_post['title'] =  make_unicode_safe(cache_post['title'])
             return cache_post
         else:
             db_post = pgdb.get_post(pgdb.PG_ENGINE, post_id)
-            try:
-                db_post['description'] = db_post['description'].encode("ascii", "replace")
-                db_post['title'] = db_post['title'].encode("ascii", "replace")
-            except:
-                logging.error("Failed Decoding See Below for Errors")
-                #print db_post['description']
-                #print type(db_post['description'])
             self.hmset('post:'+post_id, db_post)
             return db_post
 
@@ -97,8 +92,6 @@ class FMFRedisHandler(redis.StrictRedis):
             db_feed = pgdb.get_feed_by_id(pgdb.PG_ENGINE, feed_id)
             self.hmset('feed:'+feed_id, db_feed)
             return db_feed
-
-
 
     def get_all_feeds(self):
         feeds = self.zrangebylex('feeds', "-", "+")
