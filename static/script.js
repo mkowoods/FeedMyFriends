@@ -175,6 +175,7 @@ var feedSearch = function(el) {
 
 var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
+    
     $("#feed-input-btn").click(function(){
         addFeed();
     });
@@ -182,6 +183,8 @@ var main = function(){
     $("#post-input-btn").click(function(){
         addPost();
     });
+    
+    
         
     $("#post-input").click(function(){
         $(".post-input-form").removeClass("has-error has-success")
