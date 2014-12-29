@@ -11,6 +11,11 @@ body {
     border-bottom: solid #337ab7;
 }
 
+
+.icon {
+    display: none;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
@@ -28,6 +33,12 @@ body {
 }
 
 
+/*Adjustment to css to drop images once width of posts containers drops below 768px, factoring in the width of the sidebar*/
+@media (min-width: 1044px) {
+    .icon {
+        display: block;
+    }
+}
 .posts {
     padding: 20px;
 }
