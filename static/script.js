@@ -52,6 +52,7 @@ var addPost = function () {
         } else {
             articleJSONtoHTML(data).prependTo($(".posts"))
             $(".post-input-form").addClass("has-success")
+            $("#post-input").val("")
         }
     });
  };
@@ -177,16 +178,17 @@ var main = function(){
     /*Functions that are bound to html objects. To be loaded after the document*/
     
     $("#feed-input-btn").click(function(){
+        //console.log("ran click")
         addFeed();
     });
     
-    $("#post-input-btn").click(function(){
+    $("#post-input-btn").click(function(el){
         addPost();
     });
     
     $("#logo").click(function() {
         return null
-    }
+    });
         
         
     $("#post-input").click(function(){
@@ -208,7 +210,7 @@ var main = function(){
     });
     
     $("body").on("click", ".add-feed-btn", function() {
-        console.log($(this))
+        //console.log($(this))
         var feed_search_form = $(this).siblings(".feed-search")
         feed_search_form.toggle()
         feedSearch(feed_search_form.find(".feed-search-bar"))

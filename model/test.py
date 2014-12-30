@@ -6,6 +6,8 @@ import random
 #import os
 #import time
 
+#Currrently doesnt work!!!
+
 class ModelTestCase(unittest.TestCase):
 
     def setUp(self):
