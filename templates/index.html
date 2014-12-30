@@ -5,6 +5,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/static.css">
     <title>Feed My Friends</title>
+      <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-58090931-1', 'auto');
+      ga('send', 'pageview');
+
+</script>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -16,7 +25,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Feed My Friends</a>
+          <a id = "logo" class="navbar-brand" href="#">Feed My Friends</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -27,14 +36,14 @@
           </ul>
           <form class="navbar-form navbar-right post-input-form">
             <input type="text" class="form-control" id="post-input" placeholder="Add Link...">
-            <button type="button" id="post-input-btn" class="btn btn-default">+</button>
+            <input type="button" id="post-input-btn" class="btn btn-default" value="+">
           </form>
         </div>
       </div>
     </nav>
     <div class="container-fluid">
       <div class="row"> 
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-3 sidebar">
             <div id="add-feed">
                 <div>
                     <input type="text" id="feed-input" class="form-control" placeholder="Add Feed...">
@@ -49,19 +58,19 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 posts">
+        <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 posts">
             {% for post in wall %}
                 <div class="row article" post_id="{{post.post_id}}" create_time="{{post.create_time}}">
                       <div class="col-xs-0 col-md-2 icon">
                             <img src="{{post.favicon_url}}">
                       </div>
-                      <div class="col-xs-12 col-md-7">
+                      <div class="col-xs-12 col-md-8">
                           <div class="row">                          
                                 <h3 class="title"><a href="{{post.url}}" target="_blank">{{post.title}}</a></h3>
                           </div>
                           <div class="row description">{{post.description}}</div>
                       </div>
-                      <div class="col-xs-12 col-md-3 article-right-panel">
+                      <div class="col-xs-12 col-md-2 article-right-panel">
                           <div class="time-since-post">{{((current_time - post.create_time|float)/60)|round(1)}} min</div>
                           <a class="add-feed-btn" href="#">Add Feed</a> <!--| <a href="#">Like</a> -->
                           <div class="form-group feed-search">

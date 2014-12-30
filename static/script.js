@@ -184,7 +184,10 @@ var main = function(){
         addPost();
     });
     
-    
+    $("#logo").click(function() {
+        return null
+    }
+        
         
     $("#post-input").click(function(){
         $(".post-input-form").removeClass("has-error has-success")

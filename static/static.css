@@ -120,3 +120,12 @@ p {
 .feed-search {
     display: none;
 }
+
+#post-input-btn {
+    display:inline-block
+}
+
+.form-control {
+    width: auto;
+    display: inline-block
+}
