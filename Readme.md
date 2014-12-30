@@ -1,4 +1,3 @@
-###Last Migrated to Production 12/27/2014 14:19 PST
 
 A simple flask based app to allow friends to post interesting articles/blog posts to a common site to create a private feed.
 
