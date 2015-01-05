@@ -38,8 +38,6 @@ var addFeed = function () {
 var addPost = function () {
     var feed_id = "-1";
     var url = $("#post-input").val()
-    //var feed_id = should select current active feed
-    //console.log(url)
     request = $.ajax({
                 type: "POST",
                 url: "set_post",
@@ -182,7 +180,7 @@ var main = function(){
         addFeed();
     });
     
-    $("#post-input-btn").click(function(el){
+    $("#post-input-btn").click(function(){
         addPost();
     });
     

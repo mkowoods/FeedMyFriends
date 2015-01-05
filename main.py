@@ -20,10 +20,12 @@ def new_post_controller(new_url):
         post['timestamp'] = time.time()
         post['status'] = "OK"
         #TODO: start worker to write results to database, should also add date parameter to record
-    except:
+    except ValueError, e:
         #TODO: need to predefine certain Exceptions or fail for "unknown"
-        post['status'] = "Exception"
-
+        post['status'] = "Exception: scraper.ValueError %s"%(e)
+    except Exception as e:
+        post['status'] = "Exception: %s, %s"%(type(e), e)
+    app.logger.info("SCRAPER_STATUS: %s"%post['status'])
     return post
 
 #Misc Support Functions
@@ -116,6 +118,8 @@ def set_post():
     url = request.values.get('url')
     feed_id = request.values.get("feed_id")
     option = request.values.get('option')
+    #logging.info("SET_POST: url:%s, feed_id:%s, option:%s"%(url, feed_id, option))
+    app.logger.info("SET_POST: url:%s, feed_id:%s, option:%s"%(url, feed_id, option))
     out = None
     if url:
         post_data = new_post_controller(url)
